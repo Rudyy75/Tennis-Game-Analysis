@@ -4,20 +4,12 @@ import os
 import csv
 from ultralytics import YOLO
 
-# ======================================
-# AUTO FIND LATEST RUN FOLDER
-# ======================================
-
 BASE_OUTPUT_DIR = "outputs"
 
 runs = sorted(os.listdir(BASE_OUTPUT_DIR))
 RUN_DIR = os.path.join(BASE_OUTPUT_DIR, runs[-1])
 
 print("Using run folder:", RUN_DIR)
-
-# ======================================
-# PATHS
-# ======================================
 
 FRAMES_DIR = os.path.join(RUN_DIR, "frames")
 TRACKED_PLAYERS = os.path.join(RUN_DIR, "tracked_players.csv")
@@ -27,10 +19,6 @@ POSE_MODEL_PATH = "yolov8n-pose.pt"
 BOX_EXPANSION_RATIO = 0.15
 POSE_INPUT_SIZE = 640
 KEYPOINT_CONF_THRESH = 0.4
-
-# ======================================
-# OUTPUT FOLDERS (INSIDE RUN FOLDER)
-# ======================================
 
 POSE_DIR = os.path.join(RUN_DIR, "pose")
 
@@ -45,10 +33,6 @@ os.makedirs(SKELETON_DIR, exist_ok=True)
 os.makedirs(CSV_DIR, exist_ok=True)
 
 CSV_PATH = os.path.join(CSV_DIR, "pose_keypoints.csv")
-
-# ======================================
-# HELPER FUNCTIONS
-# ======================================
 
 def expand_bbox(bbox, frame_w, frame_h, ratio):
 
@@ -66,7 +50,6 @@ def expand_bbox(bbox, frame_w, frame_h, ratio):
         min(frame_w,int(x2+dx)),
         min(frame_h,int(y2+dy))
     )
-
 
 def resize_with_padding(img,target=640):
 
@@ -87,11 +70,6 @@ def resize_with_padding(img,target=640):
     padded[pad_y:pad_y+nh,pad_x:pad_x+nw] = resized
 
     return padded,scale,pad_x,pad_y
-
-
-# ======================================
-# LOAD TRACKED BOXES
-# ======================================
 
 frame_boxes = {}
 
@@ -116,11 +94,6 @@ with open(TRACKED_PLAYERS,"r") as f:
 
         frame_boxes[frame][pid] = box
 
-
-# ======================================
-# LOAD ALREADY PROCESSED FRAMES
-# ======================================
-
 processed_frames = set()
 
 if os.path.exists(CSV_PATH):
@@ -131,15 +104,7 @@ if os.path.exists(CSV_PATH):
 
 print(f"Skipping {len(processed_frames)} already processed frames...")
 
-# ======================================
-# LOAD POSE MODEL
-# ======================================
-
 pose_model = YOLO(POSE_MODEL_PATH)
-
-# ======================================
-# CSV OUTPUT
-# ======================================
 
 file_exists = os.path.exists(CSV_PATH) and os.path.getsize(CSV_PATH) > 0
 
@@ -159,10 +124,6 @@ if not file_exists:
         ]
 
     writer.writerow(header)
-
-# ======================================
-# PROCESS FRAMES
-# ======================================
 
 frame_files = sorted(os.listdir(FRAMES_DIR))
 
@@ -184,7 +145,6 @@ for frame_file in frame_files:
 
     for pid,box in frame_boxes[frame_id].items():
 
-        # expand bbox
         x1,y1,x2,y2 = expand_bbox(box,fw,fh,BOX_EXPANSION_RATIO)
 
         crop = frame[int(y1):int(y2),int(x1):int(x2)]
@@ -192,20 +152,12 @@ for frame_file in frame_files:
         if crop.size == 0:
             continue
 
-        # =============================
-        # SAVE CROPS
-        # =============================
-
         crop_path = os.path.join(
             CROPS_DIR,
             f"frame_{frame_id:05d}_player_{pid}.jpg"
         )
 
         cv2.imwrite(crop_path,crop)
-
-        # =============================
-        # CREATE POSE INPUT
-        # =============================
 
         pose_input,scale,pad_x,pad_y = resize_with_padding(crop)
 
@@ -215,10 +167,6 @@ for frame_file in frame_files:
         )
 
         cv2.imwrite(pose_input_path,pose_input)
-
-        # =============================
-        # RUN YOLOPOSE
-        # =============================
 
         result = pose_model(pose_input,verbose=False)[0]
 
@@ -232,10 +180,6 @@ for frame_file in frame_files:
         kps = result.keypoints.xy[0]
         confs = result.keypoints.conf[0]
 
-        # =============================
-        # SAVE SKELETON IMAGE
-        # =============================
-
         skeleton_img = result.plot()
 
         skeleton_path = os.path.join(
@@ -244,10 +188,6 @@ for frame_file in frame_files:
         )
 
         cv2.imwrite(skeleton_path,skeleton_img)
-
-        # =============================
-        # SAVE CSV KEYPOINTS
-        # =============================
 
         row = [frame_id,pid]
 
