@@ -123,14 +123,10 @@ def main():
         elif key == ord('6'): active_rois['p2_sets'] = (x, y, w, h); print(f"Locked P2 Sets: {(x, y, w, h)}")
 
         elif key == ord('s'):
-            print("\n" + "="*50)
-            print("COPY AND PASTE THIS INTO src/03_process.py:")
-            print("="*50)
             print("ROIS_SHRUNK = {")
             for k, (lx, ly, lw, lh) in active_rois.items():
                 print(f"    '{k}': ({lx}, {ly}, {lw}, {lh}),")
             print("}")
-            print("="*50 + "\n")
             
         elif key == ord('q'):
             break
