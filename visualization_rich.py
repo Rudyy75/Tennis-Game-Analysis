@@ -7,10 +7,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 VIDEO_PATH       = os.path.join(BASE_DIR, "input", "V010.mp4")
-PREDICTIONS_CSV  = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "final_dataset_v010.csv")
+PREDICTIONS_CSV  = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "predictions_v010.csv")
 DETECTIONS_CSV   = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "detections.csv")
 TRAJECTORIES_CSV = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "trajectories.csv")
-OUTPUT_PATH      = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "visualization_rich.mp4")
+OUTPUT_PATH      = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "visualization_rich(1).mp4")
 
 TRAIL_SECONDS = 2
 
@@ -130,7 +130,7 @@ print(f"Video: {width}x{height} @ {fps}fps, {total_frames} frames")
 print(f"Trail length: {TRAIL_LENGTH} frames ({TRAIL_SECONDS}s)")
 
 OUT_H  = height + TIMELINE_H + LABEL_BAR_H
-fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+fourcc = cv2.VideoWriter_fourcc(*"avc1")
 out    = cv2.VideoWriter(OUTPUT_PATH, fourcc, fps, (width, OUT_H))
 
 print("Pre-rendering timeline bar...")

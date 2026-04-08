@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tennis Analytics · NITK IE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+button,input{font-family:inherit;border:none;outline:none;cursor:pointer}
+
+:root{
+  --bg:        #06080f;
+  --s1:        #0b0f1a;
+  --s2:        #101520;
+  --s3:        #161c2a;
+  --border:    rgba(255,255,255,0.055);
+  --border2:   rgba(255,255,255,0.10);
+  --text:      #e2e8f5;
+  --sub:       #7a8ba8;
+  --muted:     #3d4f6a;
+  --pa:        #00c896;
+  --pb:        #4a90e2;
+  --gold:      #e8b84b;
+  --danger:    #e85c5c;
+  --r:         12px;
+  --font-d:    'Bebas Neue', sans-serif;
+  --font-b:    'Outfit', sans-serif;
+}
+
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-b);
+  font-size:13px;
+  font-weight:400;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Shell ──────────────────────────────────── */
+.shell{display:grid;grid-template-rows:48px 1fr;height:100vh;overflow:hidden}
+@media(max-width:900px){
+  html,body{overflow:auto}
+  .shell{height:auto;overflow:visible}
+}
+
+/* ── Header ─────────────────────────────────── */
+.hdr{
+  display:flex;align-items:center;
+  padding:0 18px;gap:12px;
+  background:var(--s1);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.logo{
+  font-family:var(--font-d);
+  font-size:19px;letter-spacing:.08em;
+  color:var(--text);white-space:nowrap;
+}
+.logo span{color:var(--gold)}
+.hdr-div{width:1px;height:16px;background:var(--border2)}
+.hdr-label{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.hdr-pills{display:flex;align-items:center;gap:8px;margin-left:auto}
+.pill{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;
+  background:var(--s3);border:1px solid var(--border);
+  font-size:10px;color:var(--sub);letter-spacing:.04em;
+  transition:all .2s;
+}
+.pill .dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:all .3s}
+.pill.on{border-color:var(--pa);color:var(--pa)}
+.pill.on .dot{background:var(--pa);box-shadow:0 0 5px var(--pa)}
+.pill.on-b{border-color:var(--pb);color:var(--pb)}
+.pill.on-b .dot{background:var(--pb)}
+.set-badge{
+  display:flex;align-items:center;gap:5px;
+  font-size:10px;color:var(--sub);letter-spacing:.04em;
+}
+.set-num{
+  font-family:var(--font-d);
+  font-size:15px;color:var(--gold);letter-spacing:.06em;
+}
+
+/* ── Body ───────────────────────────────────── */
+.body{display:grid;grid-template-columns:58% 42%;overflow:hidden}
+@media(max-width:900px){
+  .body{grid-template-columns:1fr;overflow:visible}
+}
+
+/* ── Left ───────────────────────────────────── */
+.left{
+  display:flex;flex-direction:column;
+  border-right:1px solid var(--border);
+  overflow:hidden;background:var(--bg);
+}
+@media(max-width:900px){.left{overflow:visible;border-right:none;border-bottom:1px solid var(--border)}}
+
+/* Video area */
+.vid-wrap{
+  position:relative;background:#000;
+  flex:1 1 0;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#vid{width:100%;height:100%;object-fit:contain;display:none}
+
+/* Video placeholder */
+.vid-ph{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;width:100%;height:100%;min-height:240px;
+  cursor:pointer;transition:background .2s;
+}
+.vid-ph:hover{background:rgba(255,255,255,0.015)}
+.vid-ph-icon{font-size:40px;opacity:.15}
+.vid-ph-title{
+  font-family:var(--font-d);font-size:16px;letter-spacing:.14em;
+  color:var(--muted);text-transform:uppercase;
+}
+.vid-ph-sub{font-size:11px;color:var(--muted);opacity:.5;text-align:center;max-width:240px;line-height:1.7}
+.vid-ph-btn{
+  margin-top:4px;padding:7px 18px;
+  border-radius:20px;border:1px solid var(--border2);
+  font-size:11px;font-weight:500;color:var(--sub);background:var(--s2);
+  transition:all .15s;
+}
+.vid-ph-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Timeline */
+.tl-wrap{flex-shrink:0;padding:8px 0 0;background:var(--s1);border-top:1px solid var(--border)}
+.tl-meta{
+  display:flex;justify-content:space-between;
+  padding:0 14px 4px;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+}
+#tlCanvas{width:100%;height:16px;display:block;cursor:pointer}
+
+/* Shot now */
+.shot-now{
+  flex-shrink:0;
+  display:flex;align-items:center;gap:14px;
+  padding:8px 16px 9px;
+  background:var(--s1);border-top:1px solid var(--border);
+}
+.sn-lbl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+.sn-val{
+  font-family:var(--font-d);font-size:24px;letter-spacing:.1em;
+  color:var(--muted);transition:color .15s;
+}
+.sn-val.flash{animation:shotflash .4s ease-out}
+@keyframes shotflash{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+.sn-player{margin-left:auto;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* ── Right ──────────────────────────────────── */
+.right{
+  overflow-y:auto;padding:16px 16px 56px;
+  scrollbar-width:thin;scrollbar-color:var(--s3) transparent;
+}
+.right::-webkit-scrollbar{width:3px}
+.right::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+@media(max-width:900px){.right{overflow:visible;padding:14px 12px 40px}}
+
+/* Section header */
+.sec-hdr{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:10px;
+}
+.sec-title{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sub);
+  white-space:nowrap;
+}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.sec{margin-bottom:20px}
+
+/* ── Setup panel ──────────────────────────────── */
+#setupPanel{display:block}
+.setup-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;margin-bottom:14px;
+}
+.setup-card-title{
+  font-family:var(--font-d);font-size:16px;letter-spacing:.08em;
+  color:var(--text);margin-bottom:5px;
+}
+.setup-card-sub{font-size:12px;color:var(--sub);line-height:1.7}
+.file-row{margin-bottom:10px}
+.file-row-lbl{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px;display:block;
+}
+.file-btn{
+  display:flex;align-items:center;gap:10px;
+  width:100%;text-align:left;background:var(--s2);
+  border:1px solid var(--border);border-radius:9px;
+  padding:9px 13px;color:var(--sub);font-size:12px;
+  transition:border-color .15s,color .15s;
+}
+.file-btn:hover{border-color:var(--border2);color:var(--text)}
+.file-btn.ok{border-color:var(--pa);color:var(--pa)}
+.file-btn .ico{font-size:16px;opacity:.4;flex-shrink:0}
+.file-btn.ok .ico{opacity:1}
+.file-btn .chk{display:none;margin-left:auto;color:var(--pa);font-weight:600}
+.file-btn.ok .chk{display:block}
+.code-hint{
+  background:var(--s2);border:1px dashed var(--muted);border-radius:9px;
+  padding:10px 13px;font-size:11px;color:var(--muted);line-height:1.8;
+  margin-top:8px;word-break:break-all;
+}
+
+/* ── Stats panel ──────────────────────────────── */
+#statsPanel{display:none}
+
+/* Score card */
+.score-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 18px;
+  position:relative;overflow:hidden;
+}
+.score-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--pa),var(--pb),transparent);
+  opacity:.5;
+}
+.score-grid{
+  display:grid;grid-template-columns:1fr 28px 1fr;
+  align-items:center;text-align:center;margin-bottom:14px;
+}
+.sc-name{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:2px;
+}
+.sc-name.a{color:var(--pa)} .sc-name.b{color:var(--pb)}
+.sc-sets{
+  font-family:var(--font-d);font-size:64px;letter-spacing:-.01em;line-height:1;
+  transition:all .3s;
+}
+.sc-sets.a{color:var(--pa)} .sc-sets.b{color:var(--pb)}
+.sc-colon{font-family:var(--font-d);font-size:22px;color:var(--muted)}
+.sc-sub{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center;
+  padding-top:12px;border-top:1px solid var(--border);
+}
+.sc-sub-lbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.sc-sub-val{
+  font-family:var(--font-d);font-size:22px;letter-spacing:.04em;
+  color:var(--text);
+}
+.sc-lead{
+  text-align:center;margin-top:10px;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+}
+
+/* Probability bar */
+.prob-wrap{margin-top:12px}
+.prob-labels{
+  display:flex;justify-content:space-between;
+  font-size:10px;font-weight:600;letter-spacing:.04em;margin-bottom:5px;
+}
+.prob-track{
+  height:5px;background:var(--s3);border-radius:3px;overflow:hidden;
+}
+.prob-fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(90deg,var(--pa),rgba(0,200,150,.6));
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* Rally position strip */
+.rally-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
+  font-size:10px;color:var(--muted);
+}
+.rally-strip .rn{
+  font-family:var(--font-d);font-size:15px;color:var(--gold);letter-spacing:.06em;
+}
+
+/* Placeholder */
+.ph-card{
+  background:var(--s1);border:1px dashed var(--muted);
+  border-radius:var(--r);padding:20px;text-align:center;margin-bottom:0;
+}
+.ph-icon{font-size:24px;opacity:.15;margin-bottom:6px}
+.ph-title{
+  font-family:var(--font-d);font-size:14px;letter-spacing:.1em;
+  color:var(--muted);margin-bottom:4px;
+}
+.ph-text{font-size:11px;color:var(--muted);opacity:.6;line-height:1.7}
+.ph-tag{
+  display:inline-block;margin-top:8px;padding:2px 10px;
+  border-radius:20px;background:var(--s3);
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+
+/* Momentum canvas */
+#momentumCanvas{width:100%;height:110px;display:block;border-radius:8px}
+
+/* Rally log table */
+.rally-table{width:100%;border-collapse:collapse}
+.rally-table th{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);padding:4px 8px;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.rally-table td{padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border)}
+.rally-table tr:last-child td{border-bottom:none}
+.correct{color:var(--pa)} .wrong{color:var(--danger)}
+.rally-acc{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:8px;
+}
+.acc-val{
+  font-family:var(--font-d);font-size:26px;color:var(--text);letter-spacing:.04em;
+}
+.acc-sub{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* Shot count cards */
+.shot-counts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.count-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px 16px;
+  position:relative;overflow:hidden;
+}
+.count-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+}
+.count-card.a::after{background:var(--pa);opacity:.4}
+.count-card.b::after{background:var(--pb);opacity:.4}
+.cc-name{font-size:9px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
+.cc-name.a{color:var(--pa)} .cc-name.b{color:var(--pb)}
+.cc-num{
+  font-family:var(--font-d);font-size:54px;line-height:1;letter-spacing:-.01em;
+}
+.cc-num.a{color:var(--pa)} .cc-num.b{color:var(--pb)}
+.cc-sub{font-size:9px;color:var(--muted);margin-top:2px}
+
+/* Shot breakdown */
+.bd-tabs{display:flex;gap:6px;margin-bottom:10px}
+.bd-tab{
+  padding:4px 14px;border-radius:20px;font-size:11px;font-weight:500;
+  border:1px solid var(--border);background:var(--s3);color:var(--muted);
+  transition:all .15s;
+}
+.bd-tab.on-a{background:rgba(0,200,150,.08);border-color:var(--pa);color:var(--pa)}
+.bd-tab.on-b{background:rgba(74,144,226,.08);border-color:var(--pb);color:var(--pb)}
+.bd-panel{display:none}
+.bd-panel.show{display:block}
+.bd-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.bd-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.bd-leg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.shot-row{display:grid;grid-template-columns:72px 1fr 32px;align-items:center;gap:8px;margin-bottom:6px}
+.shot-row-lbl{font-size:11px;color:var(--sub);text-align:right}
+.bar-track{height:4px;background:var(--s3);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.shot-n{
+  font-family:var(--font-d);font-size:15px;letter-spacing:.04em;color:var(--text);
+}
+
+/* Heatmap */
+.hm-wrap{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;padding:12px;
+}
+.hm-tabs{display:flex;gap:6px;margin-bottom:10px}
+.hm-tab{
+  padding:3px 12px;border-radius:20px;font-size:10px;font-weight:500;letter-spacing:.04em;
+  border:1px solid var(--border);background:var(--s3);color:var(--muted);transition:all .15s;
+}
+.hm-tab.on-a{background:rgba(0,200,150,.08);border-color:var(--pa);color:var(--pa)}
+.hm-tab.on-b{background:rgba(74,144,226,.08);border-color:var(--pb);color:var(--pb)}
+.hm-tab.on-both{background:rgba(232,184,75,.06);border-color:var(--gold);color:var(--gold)}
+#hmCanvas{width:100%;border-radius:7px;display:block}
+.hm-foot{
+  display:flex;justify-content:space-between;padding:6px 2px 0;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+</style>
+</head>
+<body>
+<input type="file" id="vidInput" accept="video/*" style="display:none">
+<input type="file" id="jsonInput" accept=".json" style="display:none">
+
+<div class="shell">
+
+  <!-- Header -->
+  <header class="hdr">
+    <div class="logo">Tennis <span>Analytics</span></div>
+    <div class="hdr-div"></div>
+    <div class="hdr-label">NITK IE · 2025-26</div>
+    <div class="hdr-pills">
+      <div class="pill" id="vidPill"><div class="dot"></div><span id="vidPillTxt">No video</span></div>
+      <div class="pill" id="dataPill"><div class="dot"></div><span id="dataPillTxt">No data</span></div>
+      <div class="hdr-div"></div>
+      <div class="set-badge">SET <span class="set-num" id="hdrSet">—</span></div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Left panel -->
+    <div class="left">
+
+      <!-- Video -->
+      <div class="vid-wrap">
+        <video id="vid" controls></video>
+        <div class="vid-ph" id="vidPh" onclick="document.getElementById('vidInput').click()">
+          <div class="vid-ph-icon">🎾</div>
+          <div class="vid-ph-title">Select Annotated Video</div>
+          <div class="vid-ph-sub">visualization_rich_h264.mp4<br>Any file size — browser streams natively</div>
+          <div class="vid-ph-btn">Browse →</div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="tl-wrap">
+        <div class="tl-meta">
+          <span>Shot timeline</span>
+          <span id="timeDisp">0:00 / 0:00</span>
+        </div>
+        <canvas id="tlCanvas"></canvas>
+      </div>
+
+      <!-- Current shot -->
+      <div class="shot-now">
+        <div class="sn-lbl">Now</div>
+        <div class="sn-val" id="snVal">—</div>
+        <div class="sn-player" id="snPlayer"></div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- Right panel -->
+    <div class="right">
+
+      <!-- ── SETUP ──────────────────────────────── -->
+      <div id="setupPanel">
+        <div class="setup-card">
+          <div class="setup-card-title">Getting Started</div>
+          <div class="setup-card-sub">
+            Select the video and the JSON generated by <code>prepare_data.py</code>.
+            All panels sync live as the video plays.
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Load files</span><div class="sec-line"></div></div>
+
+          <div class="file-row">
+            <label class="file-row-lbl">Step 1 — Video</label>
+            <button class="file-btn" id="vidBtn" onclick="document.getElementById('vidInput').click()">
+              <span class="ico">🎬</span>
+              <span id="vidBtnTxt">Select visualization_rich_h264.mp4</span>
+              <span class="chk">✓</span>
+            </button>
+          </div>
+
+          <div class="file-row">
+            <label class="file-row-lbl">Step 2 — Data JSON</label>
+            <button class="file-btn" id="jsonBtn" onclick="document.getElementById('jsonInput').click()">
+              <span class="ico">📊</span>
+              <span id="jsonBtnTxt">Select dashboard_data.json</span>
+              <span class="chk">✓</span>
+            </button>
+          </div>
+
+          <div class="code-hint">
+            python prepare_data.py --video V008.mp4 --shots final_dataset_v008.csv --traj trajectories.csv --detections detections.csv
+          </div>
+        </div>
+      </div><!-- /setupPanel -->
+
+      <!-- ── STATS ──────────────────────────────── -->
+      <div id="statsPanel">
+
+        <!-- 1. Live Score ──────────────────────── -->
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Live score</span><div class="sec-line"></div></div>
+          <div id="scoreContent">
+            <div class="ph-card">
+              <div class="ph-icon">🏆</div>
+              <div class="ph-title">Scoreboard</div>
+              <div class="ph-text">Awaiting Anirudh's match_probabilities.csv</div>
+              <div class="ph-tag">Run prepare_data.py with --probs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Win Probability ─────────────────── -->
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Match momentum</span><div class="sec-line"></div></div>
+          <div id="momentumContent">
+            <div class="ph-card">
+              <div class="ph-icon">📈</div>
+              <div class="ph-title">Win Probability</div>
+              <div class="ph-text">Anirudh's rally-by-rally win probability will drive this graph</div>
+              <div class="ph-tag">Awaiting --probs data</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Rally Log ──────────────────────── -->
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Rally log</span><div class="sec-line"></div></div>
+          <div id="rallyContent">
+            <div class="ph-card">
+              <div class="ph-icon">📋</div>
+              <div class="ph-title">Rally Predictions</div>
+              <div class="ph-text">Predicted vs actual rally winners with model accuracy</div>
+              <div class="ph-tag">Awaiting --rallies data</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- divider -->
+        <div style="height:1px;background:var(--border);margin:4px 0 20px"></div>
+
+        <!-- 4. Shot Counts ─────────────────────── -->
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Shot count</span><div class="sec-line"></div></div>
+          <div class="shot-counts">
+            <div class="count-card a">
+              <div class="cc-name a">Player A</div>
+              <div class="cc-num a" id="cntA">0</div>
+              <div class="cc-sub">shots so far</div>
+            </div>
+            <div class="count-card b">
+              <div class="cc-name b">Player B</div>
+              <div class="cc-num b" id="cntB">0</div>
+              <div class="cc-sub">shots so far</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Shot Breakdown ─────────────────── -->
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Shot breakdown</span><div class="sec-line"></div></div>
+          <div class="bd-legend">
+            <div class="bd-leg-item"><div class="bd-leg-dot" style="background:#4a90e2"></div>Serve</div>
+            <div class="bd-leg-item"><div class="bd-leg-dot" style="background:#00c896"></div>Forehand</div>
+            <div class="bd-leg-item"><div class="bd-leg-dot" style="background:#e85c5c"></div>Backhand</div>
+            <div class="bd-leg-item"><div class="bd-leg-dot" style="background:#e8b84b"></div>Smash</div>
+            <div class="bd-leg-item"><div class="bd-leg-dot" style="background:#a060f0"></div>Volley</div>
+          </div>
+          <div class="bd-tabs">
+            <button class="bd-tab on-a" id="bdTabA" onclick="setBdTab('A')">Player A</button>
+            <button class="bd-tab" id="bdTabB" onclick="setBdTab('B')">Player B</button>
+          </div>
+          <div class="bd-panel show" id="bdA"></div>
+          <div class="bd-panel" id="bdB"></div>
+        </div>
+
+        <!-- 6. Heatmap ─────────────────────────── -->
+        <div class="sec">
+          <div class="sec-hdr"><span class="sec-title">Court coverage</span><div class="sec-line"></div></div>
+          <div class="hm-wrap">
+            <div class="hm-tabs">
+              <button class="hm-tab on-both" id="hmBoth" onclick="setHmTab('both')">Both</button>
+              <button class="hm-tab" id="hmA" onclick="setHmTab('A')">Player A</button>
+              <button class="hm-tab" id="hmB" onclick="setHmTab('B')">Player B</button>
+            </div>
+            <canvas id="hmCanvas"></canvas>
+            <div class="hm-foot">
+              <span>← Baseline</span>
+              <span>Net</span>
+              <span>Baseline →</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /statsPanel -->
+    </div><!-- /right -->
+  </div><!-- /body -->
+</div><!-- /shell -->
+
+<script>
+/* ================================================================
+   TENNIS ANALYTICS DASHBOARD v2
+   NITK IE 2025-26
+   ================================================================ */
+
+// ── Constants ──────────────────────────────────────────────────
+const SHOT_LABELS = ["none","serve","forehand","backhand","smash","volley"];
+const SHOT_CLR = {
+  none:"#2a3547", serve:"#4a90e2", forehand:"#00c896",
+  backhand:"#e85c5c", smash:"#e8b84b", volley:"#a060f0"
+};
+const C_A = "#00c896", C_B = "#4a90e2";
+const HM_W = 440, HM_H = 250;
+
+// ── State ──────────────────────────────────────────────────────
+let D = null;           // loaded JSON
+let fps = 25, totalF = 0;
+let sPtr = 0, pPtr = 0, lastF = -1;
+
+// Identity-resolved shot counts: {A:[n_serve,n_fh,n_bh,n_sm,n_vo], B:[...]}
+let cnts = {A:[0,0,0,0,0], B:[0,0,0,0,0]};
+// Heatmap grids
+let grid = {A: new Float32Array(HM_W*HM_H), B: new Float32Array(HM_W*HM_H)};
+let courtBounds = null;
+let hmTab = 'both', bdTab = 'A';
+let identityTable = {};   // {rallyId: a_is_p1}
+let hasProbs = false, hasRallies = false;
+let momentumData = [], momentumCanvas = null;
+let rallySegments = [];    // [{id,start,end}] — from our detection pipeline
+let anirudhSegs   = [];    // [{id,start,end}] — Anirudh's precise rally boundaries
+
+// ── DOM refs ───────────────────────────────────────────────────
+const vid      = document.getElementById('vid');
+const vidPh    = document.getElementById('vidPh');
+const tlCanvas = document.getElementById('tlCanvas');
+const hmCanvas = document.getElementById('hmCanvas');
+
+// ── File inputs ───────────────────────────────────────────────
+document.getElementById('vidInput').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  vid.src = URL.createObjectURL(f);
+  vid.style.display = 'block';
+  vidPh.style.display = 'none';
+  const p = document.getElementById('vidPill');
+  p.classList.add('on');
+  document.getElementById('vidPillTxt').textContent = f.name;
+  document.getElementById('vidBtn').classList.add('ok');
+  document.getElementById('vidBtnTxt').textContent = f.name;
+  checkReady();
+});
+
+document.getElementById('jsonInput').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      onData(JSON.parse(ev.target.result));
+      const p = document.getElementById('dataPill');
+      p.classList.add('on-b');
+      document.getElementById('dataPillTxt').textContent =
+        (D && D.meta && D.meta.name) ? D.meta.name : 'data loaded';
+      document.getElementById('jsonBtn').classList.add('ok');
+      document.getElementById('jsonBtnTxt').textContent = f.name;
+      checkReady();
+    } catch(err) { alert('JSON parse error: ' + err.message); }
+  };
+  r.readAsText(f);
+});
+
+function checkReady() {
+  if (D && vid.src && vid.src !== window.location.href) {
+    document.getElementById('setupPanel').style.display = 'none';
+    document.getElementById('statsPanel').style.display = 'block';
+  }
+}
+
+// ── Data load ──────────────────────────────────────────────────
+function onData(json) {
+  D          = json;
+  fps        = json.meta.fps || 25;
+  totalF     = json.meta.total_frames || 0;
+  D.shots.sort((a,b)=>a.f-b.f);
+  D.positions.sort((a,b)=>a[0]-b[0]);
+  rallySegments = D.rally_segments  || [];
+  anirudhSegs   = D.anirudh_segments || [];
+
+  // Identity table from JSON
+  identityTable = {};
+  if (json.identity_table) {
+    for (const [k,v] of Object.entries(json.identity_table))
+      identityTable[parseInt(k)] = v;
+  }
+
+  computeCourtBounds();
+  drawTimeline();
+  buildBdRows();
+  initHm();
+
+  hasProbs   = !!(json.probabilities   && json.probabilities.length);
+  hasRallies = !!(json.rally_predictions && json.rally_predictions.length);
+
+  if (hasProbs)   buildMomentum();
+  if (hasRallies) renderRallyLog(0);
+  if (hasProbs && hasRallies) renderScore(0);
+}
+
+// ── Identity resolution ────────────────────────────────────────
+// Given raw pipeline player id (1 or 2) and a rally id,
+// return "A" or "B" (stable physical player labels).
+function resolvePlayer(rawPid, rallyId) {
+  const aIsP1 = (identityTable[rallyId] !== undefined)
+                ? identityTable[rallyId]
+                : true;   // default: Set 1, P1 = Player A
+  if (rawPid === 1) return aIsP1 ? 'A' : 'B';
+  return aIsP1 ? 'B' : 'A';
+}
+
+// Get Anirudh's rally id for a given frame.
+// Must use anirudhSegs (not rallySegments) because identityTable
+// is keyed by Anirudh's rally IDs, not the detection pipeline's segment IDs.
+function frameToRallyId(frame) {
+  if (anirudhSegs.length) {
+    let lo = 0, hi = anirudhSegs.length - 1, idx = 0;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (anirudhSegs[mid].start <= frame) { idx = mid; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+    return anirudhSegs[idx].id;
+  }
+  for (const seg of rallySegments) {
+    if (frame >= seg.start && frame <= seg.end) return seg.id;
+  }
+  return 0;
+}
+
+// ── Court bounds ───────────────────────────────────────────────
+function computeCourtBounds() {
+  if (!D.positions.length) {
+    courtBounds = {xmin:0, xmax:1920, ymin:0, ymax:1080}; return;
+  }
+  const xs = D.positions.map(p=>p[2]).sort((a,b)=>a-b);
+  const ys = D.positions.map(p=>p[3]).sort((a,b)=>a-b);
+  const n = xs.length, c = Math.floor(n*0.02);
+  courtBounds = {xmin:xs[c], xmax:xs[n-1-c], ymin:ys[c], ymax:ys[n-1-c]};
+}
+
+// ── Shot timeline ──────────────────────────────────────────────
+function drawTimeline() {
+  const W = tlCanvas.parentElement.clientWidth || 800;
+  tlCanvas.width = W; tlCanvas.height = 16;
+  const ctx = tlCanvas.getContext('2d');
+  ctx.fillStyle = '#101520';
+  ctx.fillRect(0,0,W,16);
+  if (!D || !D.shots.length) return;
+
+  const tf = totalF || D.shots[D.shots.length-1].f+1;
+  let sp = 0, cur = 'none';
+  for (let x = 0; x < W; x++) {
+    const fe = Math.floor((x+1)/W*tf);
+    while (sp < D.shots.length && D.shots[sp].f < fe) {
+      if (SHOT_LABELS[D.shots[sp].s] !== 'none') cur = SHOT_LABELS[D.shots[sp].s];
+      sp++;
+    }
+    ctx.fillStyle = SHOT_CLR[cur] || '#2a3547';
+    ctx.fillRect(x,0,1,16);
+  }
+  tlCanvas._bg = ctx.getImageData(0,0,W,16);
+}
+
+function drawPlayhead(frame) {
+  const W = tlCanvas.width, H = tlCanvas.height;
+  const ctx = tlCanvas.getContext('2d');
+  if (tlCanvas._bg) ctx.putImageData(tlCanvas._bg, 0, 0);
+  const tf = totalF || 1;
+  const x = Math.floor(frame/tf*W);
+  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+}
+
+tlCanvas.addEventListener('click', e => {
+  if (!vid.src || !D) return;
+  const r = tlCanvas.getBoundingClientRect();
+  vid.currentTime = ((e.clientX-r.left)/r.width) * vid.duration;
+});
+
+// ── Breakdown rows ─────────────────────────────────────────────
+function buildBdRows() {
+  const shots = ["serve","forehand","backhand","smash","volley"];
+  ['A','B'].forEach(p => {
+    document.getElementById('bd'+p).innerHTML = shots.map(sh => `
+      <div class="shot-row">
+        <div class="shot-row-lbl">${sh.charAt(0).toUpperCase()+sh.slice(1)}</div>
+        <div class="bar-track"><div class="bar-fill" id="bar${p}${sh}" style="width:0%;background:${SHOT_CLR[sh]}"></div></div>
+        <div class="shot-n" id="n${p}${sh}">0</div>
+      </div>`).join('');
+  });
+}
+
+function setBdTab(p) {
+  bdTab = p;
+  document.getElementById('bdA').className = 'bd-panel' + (p==='A'?' show':'');
+  document.getElementById('bdB').className = 'bd-panel' + (p==='B'?' show':'');
+  document.getElementById('bdTabA').className = 'bd-tab' + (p==='A'?' on-a':'');
+  document.getElementById('bdTabB').className = 'bd-tab' + (p==='B'?' on-b':'');
+}
+
+// ── Heatmap ────────────────────────────────────────────────────
+function initHm() {
+  hmCanvas.width = HM_W; hmCanvas.height = HM_H;
+  renderHm();
+}
+
+function posToGrid(cx,cy) {
+  const cb = courtBounds;
+  const nx = (cx-cb.xmin)/(cb.xmax-cb.xmin);
+  const ny = (cy-cb.ymin)/(cb.ymax-cb.ymin);
+  return {
+    gx: Math.max(0,Math.min(HM_W-1,Math.round(nx*(HM_W-1)))),
+    gy: Math.max(0,Math.min(HM_H-1,Math.round(ny*(HM_H-1))))
+  };
+}
+
+function addHmPoint(player, cx, cy) {
+  const {gx,gy} = posToGrid(cx,cy);
+  const R = 5;
+  for (let dy=-R;dy<=R;dy++) for (let dx=-R;dx<=R;dx++) {
+    const x2=gx+dx, y2=gy+dy;
+    if (x2<0||x2>=HM_W||y2<0||y2>=HM_H) continue;
+    grid[player][y2*HM_W+x2] += Math.exp(-(dx*dx+dy*dy)/(2*6));
+  }
+}
+
+function setHmTab(t) {
+  hmTab = t;
+  document.getElementById('hmBoth').className = 'hm-tab' + (t==='both'?' on-both':'');
+  document.getElementById('hmA').className    = 'hm-tab' + (t==='A'?' on-a':'');
+  document.getElementById('hmB').className    = 'hm-tab' + (t==='B'?' on-b':'');
+  renderHm();
+}
+
+function renderHm() {
+  const ctx = hmCanvas.getContext('2d');
+  const img = ctx.createImageData(HM_W, HM_H);
+  const d   = img.data;
+
+  // Court base (deep navy)
+  for (let i=0;i<HM_W*HM_H;i++){d[i*4]=17;d[i*4+1]=26;d[i*4+2]=48;d[i*4+3]=255}
+
+  let mxA=0, mxB=0;
+  if (hmTab!=='B') for (const v of grid.A) if(v>mxA) mxA=v;
+  if (hmTab!=='A') for (const v of grid.B) if(v>mxB) mxB=v;
+
+  const lerp = (a,b,t) => a+(b-a)*Math.min(t,1);
+
+  for (let i=0;i<HM_W*HM_H;i++){
+    let r=17,g=26,b=48;
+    if (hmTab!=='B' && mxA>0) {
+      const t = Math.min(grid.A[i]/mxA,1);
+      if(t>0.02){r=lerp(r,0,t);g=lerp(g,200,t);b=lerp(b,150,t)}
+    }
+    if (hmTab!=='A' && mxB>0) {
+      const t = Math.min(grid.B[i]/mxB,1);
+      if(t>0.02){r=lerp(r,74,t);g=lerp(g,144,t);b=lerp(b,226,t)}
+    }
+    d[i*4]=r;d[i*4+1]=g;d[i*4+2]=b;d[i*4+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+  drawCourtLines(ctx);
+  drawCurrentPlayers(ctx);
+}
+
+function drawCourtLines(ctx) {
+  ctx.strokeStyle='rgba(160,200,255,0.35)';ctx.lineWidth=1;
+  const W=HM_W,H=HM_H,mx=W*.10,my=H*.08;
+  ctx.strokeRect(mx,my,W-mx*2,H-my*2);
+  ctx.beginPath();ctx.moveTo(mx,H/2);ctx.lineTo(W-mx,H/2);ctx.stroke();
+  const sTop=my+(H-my*2)*.30,sBot=H-my-(H-my*2)*.30;
+  ctx.beginPath();
+  ctx.moveTo(W/2,sTop);ctx.lineTo(W/2,H/2);
+  ctx.moveTo(W/2,H/2);ctx.lineTo(W/2,sBot);
+  ctx.moveTo(mx,sTop);ctx.lineTo(W-mx,sTop);
+  ctx.moveTo(mx,sBot);ctx.lineTo(W-mx,sBot);
+  ctx.stroke();
+  ctx.fillStyle='rgba(160,200,255,0.25)';
+  ctx.font='9px Outfit,sans-serif';ctx.textAlign='center';
+  ctx.fillText('NET',W/2,H/2-4);
+}
+
+function drawCurrentPlayers(ctx) {
+  if (!D||pPtr===0) return;
+  const last = {};
+  for (let i=Math.max(0,pPtr-80);i<pPtr;i++){
+    const [f,pid,cx,cy]=D.positions[i];
+    const rid = frameToRallyId(f);
+    const player = resolvePlayer(pid, rid);
+    last[player]={cx,cy};
+  }
+  for (const [pl,pos] of Object.entries(last)){
+    if (hmTab==='A'&&pl!=='A') continue;
+    if (hmTab==='B'&&pl!=='B') continue;
+    const {gx,gy}=posToGrid(pos.cx,pos.cy);
+    const c = pl==='A'?C_A:C_B;
+    ctx.beginPath();ctx.arc(gx,gy,7,0,Math.PI*2);
+    ctx.fillStyle=c;ctx.fill();
+    ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='white';ctx.font='bold 9px Outfit,sans-serif';
+    ctx.textAlign='center';ctx.fillText(pl,gx,gy+3);
+  }
+}
+
+// ── Video events ───────────────────────────────────────────────
+vid.addEventListener('timeupdate', onTick);
+vid.addEventListener('seeking', () => {
+  if (!D) return;
+  const f = Math.floor(vid.currentTime*fps);
+  if (f < lastF) resetAndRebuild(f);
+});
+
+function onTick() {
+  if (!D) return;
+  const f = Math.floor(vid.currentTime*fps);
+  if (f===lastF) return;
+  advanceTo(f);
+}
+
+function advanceTo(f) {
+  while (sPtr < D.shots.length && D.shots[sPtr].f <= f) {
+    const s   = D.shots[sPtr];
+    const rid = frameToRallyId(s.f);
+    const pl  = resolvePlayer(s.p, rid);
+    const si  = s.s - 1; // 0=serve,1=fh,2=bh,3=smash,4=volley
+    if (si >= 0) cnts[pl][si]++;
+    sPtr++;
+  }
+  while (pPtr < D.positions.length && D.positions[pPtr][0] <= f) {
+    const [,pid,cx,cy] = D.positions[pPtr];
+    const rid = frameToRallyId(D.positions[pPtr][0]);
+    const pl  = resolvePlayer(pid, rid);
+    addHmPoint(pl, cx, cy);
+    pPtr++;
+  }
+  lastF = f;
+  updateUI(f);
+}
+
+function resetAndRebuild(f) {
+  cnts = {A:[0,0,0,0,0], B:[0,0,0,0,0]};
+  grid.A.fill(0); grid.B.fill(0);
+  sPtr=0; pPtr=0; lastF=-1;
+  advanceTo(f);
+}
+
+// ── UI update ──────────────────────────────────────────────────
+function updateUI(frame) {
+  updateTime();
+  drawPlayhead(frame);
+  updateShotNow(frame);
+
+  // Totals
+  const tA = cnts.A.reduce((a,b)=>a+b,0);
+  const tB = cnts.B.reduce((a,b)=>a+b,0);
+  document.getElementById('cntA').textContent = tA;
+  document.getElementById('cntB').textContent = tB;
+
+  // Breakdown bars
+  updateBars('A', cnts.A);
+  updateBars('B', cnts.B);
+
+  // Heatmap every 8 frames
+  if (frame%8===0) renderHm();
+
+  // Anirudh panels
+  if (hasProbs||hasRallies) {
+    const rallyIdx = getCurrentRallyIdx(frame);
+    if (hasProbs&&hasRallies) renderScore(rallyIdx);
+    if (hasRallies)           renderRallyLog(rallyIdx);
+    if (hasProbs)             updateMomentum(rallyIdx);
+  }
+
+  // Header set indicator
+  updateSetBadge(frame);
+}
+
+function updateSetBadge(frame) {
+  if (!hasProbs) return;
+  const rallyIdx = getCurrentRallyIdx(frame);
+  const row = D.probabilities[rallyIdx];
+  if (!row || !row.Score) return;
+  const m = row.Score.match(/Sets:\s*(\d+)-(\d+)/);
+  if (!m) return;
+  const setsPlayed = parseInt(m[1]) + parseInt(m[2]);
+  document.getElementById('hdrSet').textContent = setsPlayed + 1;
+}
+
+function updateTime() {
+  const c = vid.currentTime||0, dur = vid.duration||0;
+  document.getElementById('timeDisp').textContent = fmt(c)+' / '+fmt(dur);
+}
+const fmt = s => `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+
+function updateShotNow(frame) {
+  const el = document.getElementById('snVal');
+  const pe = document.getElementById('snPlayer');
+  const lookback = Math.floor(fps*0.6);
+  let shot='none', pid=0;
+  for (let i=sPtr-1; i>=0&&i>=sPtr-100; i--) {
+    const s = D.shots[i];
+    if (s.f>frame-lookback && SHOT_LABELS[s.s]!=='none') {
+      shot=SHOT_LABELS[s.s]; pid=s.p; break;
+    }
+  }
+  el.textContent = shot==='none' ? '—' : shot.toUpperCase();
+  el.style.color = SHOT_CLR[shot]||'var(--muted)';
+  if (pid && shot!=='none') {
+    const rid = frameToRallyId(frame);
+    const pl  = resolvePlayer(pid, rid);
+    pe.textContent = 'Player '+pl;
+    pe.style.color = pl==='A'?C_A:C_B;
+  } else {
+    pe.textContent = '';
+  }
+}
+
+function updateBars(p, c) {
+  const shots=["serve","forehand","backhand","smash","volley"];
+  const mx = Math.max(...c,1);
+  shots.forEach((sh,i)=>{
+    const bar = document.getElementById('bar'+p+sh);
+    const n   = document.getElementById('n'+p+sh);
+    if(bar) bar.style.width = (c[i]/mx*100).toFixed(1)+'%';
+    if(n)   n.textContent = c[i];
+  });
+}
+
+// ── Rally index from frame ─────────────────────────────────────
+// Uses Anirudh's precise start_frame/end_frame boundaries when available.
+// Each anirudhSegs entry maps directly to an index in D.probabilities,
+// so the segment index IS the rally index.
+// Falls back to proportional mapping if segments are absent.
+function getCurrentRallyIdx(frame) {
+  const n = (D.probabilities || []).length;
+  if (!n) return 0;
+
+  if (anirudhSegs.length) {
+    // Binary search: find the last segment whose start <= frame
+    let lo = 0, hi = anirudhSegs.length - 1, idx = 0;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (anirudhSegs[mid].start <= frame) { idx = mid; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+    return Math.min(idx, n - 1);
+  }
+
+  // Fallback: proportional spread across total frames
+  const fraction = totalF > 0 ? frame / totalF : 0;
+  return Math.min(Math.floor(fraction * n), n - 1);
+}
+
+// ── Score card ─────────────────────────────────────────────────
+function renderScore(rallyIdx) {
+  if (!hasProbs||!hasRallies) return;
+  const row  = D.probabilities[Math.min(rallyIdx, D.probabilities.length-1)];
+  const rid  = parseInt(row.Rally_ID);
+  const aIsP1 = identityTable[rid]!==undefined ? identityTable[rid] : true;
+  const sc   = parseScore(row.Score||'');
+  // Swap sets/games/points if identity is flipped
+  const pASets = aIsP1 ? sc.p1s : sc.p2s;
+  const pBSets = aIsP1 ? sc.p2s : sc.p1s;
+  const pAGames= aIsP1 ? sc.p1g : sc.p2g;
+  const pBGames= aIsP1 ? sc.p2g : sc.p1g;
+  const pAPts  = aIsP1 ? sc.p1p : sc.p2p;
+  const pBPts  = aIsP1 ? sc.p2p : sc.p1p;
+  const pAWin  = aIsP1 ? parseFloat(row.P1_Win_Probability||.5)*100
+                        : (1-parseFloat(row.P1_Win_Probability||.5))*100;
+  const pBWin  = 100-pAWin;
+
+  let leadTxt='';
+  if (pAWin>pBWin+3)      leadTxt=`<span style="color:${C_A}">▲ Player A leading</span>`;
+  else if (pBWin>pAWin+3) leadTxt=`<span style="color:${C_B}">▲ Player B leading</span>`;
+  else                     leadTxt=`<span style="color:var(--muted)">Even match</span>`;
+
+  document.getElementById('scoreContent').innerHTML = `
+    <div class="score-card">
+      <div class="score-grid">
+        <div>
+          <div class="sc-name a">Player A</div>
+          <div class="sc-sets a">${pASets}</div>
+        </div>
+        <div class="sc-colon">:</div>
+        <div>
+          <div class="sc-name b">Player B</div>
+          <div class="sc-sets b">${pBSets}</div>
+        </div>
+      </div>
+      <div class="sc-sub">
+        <div>
+          <div class="sc-sub-lbl">Games</div>
+          <div class="sc-sub-val">${pAGames} – ${pBGames}</div>
+        </div>
+        <div>
+          <div class="sc-sub-lbl">Points</div>
+          <div class="sc-sub-val">${pAPts} – ${pBPts}</div>
+        </div>
+      </div>
+      <div class="sc-lead">${leadTxt}</div>
+      <div class="prob-wrap">
+        <div class="prob-labels">
+          <span style="color:${C_A}">A &nbsp; ${pAWin.toFixed(1)}%</span>
+          <span style="color:${C_B}">${pBWin.toFixed(1)}% &nbsp; B</span>
+        </div>
+        <div class="prob-track"><div class="prob-fill" style="width:${pAWin.toFixed(1)}%"></div></div>
+      </div>
+      <div class="rally-strip">
+        <span>Rally</span>
+        <span class="rn">${rallyIdx+1} <span style="font-size:11px;color:var(--muted)">/ ${D.probabilities.length}</span></span>
+        ${rallyIdx >= D.probabilities.length-1 ? '<span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)">Analysis complete</span>' : ''}
+      </div>
+    </div>`;
+}
+
+function parseScore(s) {
+  const sets  = s.match(/Sets:\s*(\d+)-(\d+)/);
+  const games = s.match(/Games:\s*(\d+)-(\d+)/);
+  const pts   = s.match(/Points:\s*([^|]+)/);
+  const pa    = pts ? pts[1].replace(/\(.*?\)/g,'').trim().split('-') : ['-','-'];
+  return {
+    p1s: sets?sets[1]:'—', p2s: sets?sets[2]:'—',
+    p1g: games?games[1]:'—', p2g: games?games[2]:'—',
+    p1p: (pa[0]||'-').trim(), p2p: (pa[1]||'-').trim()
+  };
+}
+
+// ── Momentum chart ─────────────────────────────────────────────
+function buildMomentum() {
+  document.getElementById('momentumContent').innerHTML =
+    '<canvas id="momentumCanvas"></canvas>';
+  momentumCanvas = document.getElementById('momentumCanvas');
+  momentumCanvas.width  = momentumCanvas.parentElement.clientWidth||300;
+  momentumCanvas.height = 110;
+  // Build Player A win probability array (identity-adjusted)
+  momentumData = D.probabilities.map((row,i) => {
+    const rid   = parseInt(row.Rally_ID);
+    const aIsP1 = identityTable[rid]!==undefined ? identityTable[rid] : true;
+    const p1Win = parseFloat(row.P1_Win_Probability||0.5)*100;
+    return aIsP1 ? p1Win : 100-p1Win;
+  });
+  updateMomentum(momentumData.length-1);
+}
+
+function updateMomentum(curIdx) {
+  if (!momentumCanvas||!momentumData.length) return;
+  const ctx = momentumCanvas.getContext('2d');
+  const W = momentumCanvas.width, H = momentumCanvas.height;
+  ctx.clearRect(0,0,W,H);
+  const pts = momentumData;
+  const toX = i => (i/(pts.length-1))*W;
+  const toY = v => H-(v/100)*H;
+
+  // 50% grid line
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Future ghost
+  if (curIdx < pts.length-1) {
+    ctx.beginPath();
+    for (let i=curIdx;i<pts.length;i++) {
+      i===curIdx?ctx.moveTo(toX(i),toY(pts[i])):ctx.lineTo(toX(i),toY(pts[i]));
+    }
+    ctx.strokeStyle='rgba(255,255,255,0.10)';ctx.lineWidth=1.5;ctx.stroke();
+  }
+
+  // Past fill + line
+  if (curIdx>=0) {
+    ctx.beginPath();
+    for (let i=0;i<=curIdx;i++) i===0?ctx.moveTo(toX(i),toY(pts[i])):ctx.lineTo(toX(i),toY(pts[i]));
+    ctx.strokeStyle=C_A;ctx.lineWidth=2;ctx.stroke();
+    ctx.lineTo(toX(curIdx),H);ctx.lineTo(0,H);ctx.closePath();
+    ctx.fillStyle='rgba(0,200,150,0.07)';ctx.fill();
+  }
+
+  // Cursor dot
+  if (curIdx>=0&&curIdx<pts.length) {
+    ctx.beginPath();ctx.arc(toX(curIdx),toY(pts[curIdx]),4,0,Math.PI*2);
+    ctx.fillStyle='#e8b84b';ctx.fill();
+    ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();
+  }
+
+  // Labels
+  ctx.fillStyle='rgba(100,130,180,0.5)';
+  ctx.font='9px Outfit,sans-serif';ctx.textAlign='left';
+  ctx.fillText('A 100%',3,10);ctx.fillText('50%',3,H/2-2);ctx.fillText('0%',3,H-2);
+}
+
+// ── Rally log ──────────────────────────────────────────────────
+function renderRallyLog(upToIdx) {
+  if (!hasRallies) return;
+  const rows = D.rally_predictions.slice(0, upToIdx+1);
+  const n    = rows.length;
+  const ok   = rows.filter(r=>r.Correct==1||r.Correct===true).length;
+  const acc  = n ? (ok/n*100).toFixed(1) : '—';
+  const last = rows.slice(-6).reverse();
+
+  // Identity-resolve winner labels
+  function resolveName(raw, rallyId) {
+    const pid = (String(raw).trim().toUpperCase()==='P1'||raw===1||raw==='1') ? 1 : 2;
+    return 'Player ' + resolvePlayer(pid, parseInt(rallyId||1));
+  }
+
+  const trs = last.map(r => {
+    const correct = r.Correct==1||r.Correct===true;
+    const rid = r.Rally_ID||'';
+    return `<tr>
+      <td>${rid}</td>
+      <td>${resolveName(r.Server||'P1',rid)}</td>
+      <td>${resolveName(r.Actual_Winner||'P1',rid)}</td>
+      <td>${resolveName(r.Predicted_Winner||'P1',rid)}</td>
+      <td class="${correct?'correct':'wrong'}">${correct?'✓':'✗'}</td>
+    </tr>`;
+  }).join('');
+
+  const isComplete = upToIdx >= D.rally_predictions.length - 1;
+  const completeBanner = isComplete
+    ? `<div style="margin-top:10px;padding:8px 12px;border-radius:8px;background:rgba(232,184,75,0.07);border:1px solid rgba(232,184,75,0.2);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-align:center">
+        ✓ &nbsp; Analysis complete — ${D.rally_predictions.length} rallies processed
+       </div>`
+    : '';
+
+  document.getElementById('rallyContent').innerHTML = `
+    <div class="rally-acc">
+      <span style="font-size:11px;color:var(--muted)">${n} rallies analysed</span>
+      <span><span class="acc-val">${acc}%</span><span class="acc-sub">model accuracy</span></span>
+    </div>
+    <table class="rally-table">
+      <thead><tr><th>ID</th><th>Server</th><th>Actual</th><th>Predicted</th><th></th></tr></thead>
+      <tbody>${trs}</tbody>
+    </table>
+    ${completeBanner}`;
+}
+
+// ── Resize ─────────────────────────────────────────────────────
+window.addEventListener('resize', ()=>{
+  if (D) drawTimeline();
+  if (momentumCanvas){
+    momentumCanvas.width = momentumCanvas.parentElement.clientWidth||300;
+    updateMomentum(getCurrentRallyIdx(lastF));
+  }
+});
+
+// ── Init ───────────────────────────────────────────────────────
+hmCanvas.width = HM_W; hmCanvas.height = HM_H;
+renderHm();
+
+</script>
+</body>
+</html>

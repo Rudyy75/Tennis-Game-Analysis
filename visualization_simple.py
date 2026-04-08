@@ -5,10 +5,10 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-VIDEO_PATH      = os.path.join(BASE_DIR, "input", "V007.mp4")
-PREDICTIONS_CSV = os.path.join(BASE_DIR, "outputs", "run_20260401_131245", "final_dataset_v007.csv")
-DETECTIONS_CSV  = os.path.join(BASE_DIR, "outputs", "run_20260401_131245", "detections.csv")
-OUTPUT_PATH     = os.path.join(BASE_DIR, "outputs", "run_20260401_131245", "visualization_simple.mp4")
+VIDEO_PATH      = os.path.join(BASE_DIR, "input", "V010.mp4")
+PREDICTIONS_CSV = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "predictions_v010.csv")
+DETECTIONS_CSV  = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "detections.csv")
+OUTPUT_PATH     = os.path.join(BASE_DIR, "outputs", "run_20260329_212712", "visualization_simple(1).mp4")
 
 
 def build_gameplay_frames_set(detections_csv_path):
@@ -113,7 +113,7 @@ player_shots = {}
 for frame_id, group in pred_df.groupby("frame_id"):
 
     shots = (
-        group.set_index("player_id")["shot_type"]  # Changed from "predicted_shot" to "shot_type"
+        group.set_index("player_id")["predicted_shot"]  # Changed from "predicted_shot" to "shot_type"
         .fillna("none")
         .astype(str)
         .str.lower()
@@ -162,7 +162,7 @@ total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 print(f"Video: {width}x{height} @ {fps}fps, {total_frames} frames")
 
 OUT_H  = height + TIMELINE_H + LABEL_BAR_H
-fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+fourcc = cv2.VideoWriter_fourcc(*"avc1")
 out    = cv2.VideoWriter(OUTPUT_PATH, fourcc, fps, (width, OUT_H))
 
 print("Pre-rendering timeline bar...")
