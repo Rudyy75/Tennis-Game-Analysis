@@ -18,7 +18,7 @@ import joblib
 
 # Accept match ID from command line: python src/08a_rally_rf.py v007
 MATCH_ID = sys.argv[1] if len(sys.argv) > 1 else 'v010'
-print(f"\n=== Rally RF for {MATCH_ID.upper()} ===")
+print(f"\nRally RF for {MATCH_ID.upper()}")
 
 FEATURES_CSV = f'rally_data/rally_features_{MATCH_ID}.csv'
 MODEL_SAVE = f'models/rally_best_{MATCH_ID}.json'
@@ -124,7 +124,7 @@ def train_and_evaluate():
 
     # Save trained model (for predicting on NEW data)
     joblib.dump(best_model, MODEL_PICKLE)
-    print(f"\n✓ Trained model saved to {MODEL_PICKLE}")
+    print(f"\nTrained model saved to {MODEL_PICKLE}")
 
     # Out-of-Fold Predictions (honest evaluation) 
     print("\nGenerating Out-of-Fold Predictions")

@@ -209,9 +209,7 @@ def main():
 
     # Game-by-game
     if n_games > 0:
-        print(f"\n{'─' * 50}")
         print(f"  GAME-BY-GAME")
-        print(f"{'─' * 50}")
         gi = 0
         cg_rallies = []
         for r in results:
@@ -233,11 +231,9 @@ def main():
 
     # Win prob trajectory
     wps = [r['P1_Win_Probability'] for r in results]
-    print(f"\n{'─' * 50}")
-    print(f"  WIN PROB: {wps[0]:.1%} → {wps[-1]:.1%} (range [{min(wps):.1%}, {max(wps):.1%}])")
+    print(f"  WIN PROB: {wps[0]:.1%} → {wps[-1]:.1%} (range [{min(wps):.1%}, {max(wps):.1%}]")
 
-    print(f"\n  Saved → {OUTPUT_CSV}")
-    print(f"{'=' * 60}")
+    print(f"  Saved → {OUTPUT_CSV}")
 
 if __name__ == '__main__':
     main()

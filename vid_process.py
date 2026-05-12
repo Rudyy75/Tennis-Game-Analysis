@@ -529,7 +529,7 @@ def process_video(video_path, output_csv='score_output.csv', output_video=None, 
     print(f"Detected {score_changes} scoreboard updates")
     print(f"Saved scores to '{output_csv}'")
     if output_video:
-        print(f"✓ Saved masked video to '{output_video}'")
+        print(f"Saved masked video to '{output_video}'")
 
 
 if __name__ == "__main__":
