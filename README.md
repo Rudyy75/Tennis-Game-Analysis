@@ -180,6 +180,10 @@ Tennis-Game-Analysis/
 │   ├── visualization_rich.py         # Annotated video with trails, shots & timeline
 │   └── visualization_simple.py       # Lightweight annotated video output
 │
+<<<<<<< HEAD
+=======
+├── assets/                           # Demo video, screenshots, and visuals for README
+>>>>>>> f3811e2 (add demo video, pose sample, and dashboard visuals to README)
 ├── models/                           # Trained model weights & metadata (git-ignored)
 ├── input/                            # Source video files (git-ignored)
 ├── .gitignore
@@ -224,6 +228,14 @@ Tennis-Game-Analysis/
 
 **Scripts:** `yolopose_players_detections.py` → `create_final_dataset.py` → `shot/final_lstm.py`
 
+<<<<<<< HEAD
+=======
+<p align="center">
+  <img src="assets/pose_sample.jpg" width="300" alt="YOLOv8-Pose keypoint overlay on Player 1"/>
+  <br/><em>YOLOv8-Pose — 17 COCO keypoints extracted per player crop (confidence 0.88)</em>
+</p>
+
+>>>>>>> f3811e2 (add demo video, pose sample, and dashboard visuals to README)
 - **Pose Estimation** crops each tracked player with 15% bbox expansion, resizes to 640×640 with padding, and runs **YOLOv8n-Pose** to extract 17 COCO keypoints with confidence scores.
 - **Final Dataset** merges bounding boxes, ball trajectories (with velocity), and pose keypoints into a single per-frame, per-player CSV.
 - **Shot Classification** (trained in Google Colab):
@@ -425,6 +437,14 @@ python visualization_rich.py
 
 ## Results
 
+<<<<<<< HEAD
+=======
+<p align="center">
+  <img src="assets/dashboard_full.png" width="900" alt="Tennis Analytics Dashboard — Rally Log, Match Momentum & Court Coverage"/>
+  <br/><em>Live analytics dashboard — match momentum curve, rally-by-rally predictions, shot breakdown, and court coverage heatmap</em>
+</p>
+
+>>>>>>> f3811e2 (add demo video, pose sample, and dashboard visuals to README)
 The pipeline has been validated across **three Wimbledon match recordings** (v007, v008, v010):
 
 | Metric | Description |
@@ -471,4 +491,8 @@ The Multi-Task LSTM consistently outperforms the standalone Random Forest by lev
   </tr>
 </table>
 
+<<<<<<< HEAD
 ---
+=======
+---
+>>>>>>> f3811e2 (add demo video, pose sample, and dashboard visuals to README)
