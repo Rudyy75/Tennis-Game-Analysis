@@ -5,29 +5,28 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tennis Analytics · NITK IE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 button,input{font-family:inherit;border:none;outline:none;cursor:pointer}
 
 :root{
-  --bg:        #05070e;
-  --s1:        #0a0d18;
-  --s2:        #0f1320;
-  --s3:        #151a28;
-  --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.13);
-  --text:      #f4f7ff;
-  --sub:       #a8bcd4;
-  --muted:     #4a5f7a;
-  --pa:        #00d4a0;
-  --pb:        #5b9ef5;
-  --gold:      #f0c050;
-  --danger:    #f06060;
+  --bg:        #06080f;
+  --s1:        #0b0f1a;
+  --s2:        #101520;
+  --s3:        #161c2a;
+  --border:    rgba(255,255,255,0.055);
+  --border2:   rgba(255,255,255,0.10);
+  --text:      #e2e8f5;
+  --sub:       #7a8ba8;
+  --muted:     #3d4f6a;
+  --pa:        #00c896;
+  --pb:        #4a90e2;
+  --gold:      #e8b84b;
+  --danger:    #e85c5c;
   --r:         12px;
   --font-d:    'Bebas Neue', sans-serif;
-  --font-b:    'Space Grotesk', 'Inter', sans-serif;
+  --font-b:    'Outfit', sans-serif;
 }
 
 html,body{
@@ -35,11 +34,10 @@ html,body{
   background:var(--bg);
   color:var(--text);
   font-family:var(--font-b);
-  font-size:14px;
+  font-size:13px;
   font-weight:400;
-  line-height:1.55;
+  line-height:1.5;
   -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
 }
 
 /* ── Shell ──────────────────────────────────── */
@@ -52,22 +50,21 @@ html,body{
 /* ── Header ─────────────────────────────────── */
 .hdr{
   display:flex;align-items:center;
-  padding:0 20px;gap:14px;
+  padding:0 18px;gap:12px;
   background:var(--s1);
   border-bottom:1px solid var(--border);
   flex-shrink:0;
 }
 .logo{
   font-family:var(--font-d);
-  font-size:24px;letter-spacing:.1em;
-  color:#ffffff;white-space:nowrap;
+  font-size:19px;letter-spacing:.08em;
+  color:var(--text);white-space:nowrap;
 }
 .logo span{color:var(--gold)}
-.hdr-div{width:1px;height:18px;background:var(--border2)}
+.hdr-div{width:1px;height:16px;background:var(--border2)}
 .hdr-label{
-  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(255,255,255,0.5);white-space:nowrap;font-weight:600;
-  font-family:var(--font-b);
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
 }
 .hdr-pills{display:flex;align-items:center;gap:8px;margin-left:auto}
 .pill{
@@ -135,32 +132,30 @@ html,body{
 }
 .vid-ph-btn:hover{border-color:var(--gold);color:var(--gold)}
 
+/* Timeline */
 .tl-wrap{flex-shrink:0;padding:8px 0 0;background:var(--s1);border-top:1px solid var(--border)}
 .tl-meta{
   display:flex;justify-content:space-between;
-  padding:0 14px 5px;
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(255,255,255,0.6);font-weight:700;font-family:var(--font-b);
+  padding:0 14px 4px;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
 }
-#tlCanvas{width:100%;height:18px;display:block;cursor:pointer}
+#tlCanvas{width:100%;height:16px;display:block;cursor:pointer}
 
 /* Shot now */
 .shot-now{
   flex-shrink:0;
   display:flex;align-items:center;gap:14px;
-  padding:9px 16px 10px;
+  padding:8px 16px 9px;
   background:var(--s1);border-top:1px solid var(--border);
 }
-.sn-lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(255,255,255,0.55);flex-shrink:0;font-weight:700;font-family:var(--font-b);}
+.sn-lbl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
 .sn-val{
-  font-family:var(--font-d);font-size:26px;letter-spacing:.1em;
+  font-family:var(--font-d);font-size:24px;letter-spacing:.1em;
   color:var(--muted);transition:color .15s;
 }
 .sn-val.flash{animation:shotflash .4s ease-out}
 @keyframes shotflash{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
-.sn-player{margin-left:auto;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--muted);font-weight:600;}
+.sn-player{margin-left:auto;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
 /* ── Right ──────────────────────────────────── */
 .right{
@@ -173,18 +168,15 @@ html,body{
 
 /* Section header */
 .sec-hdr{
-  display:flex;align-items:center;gap:12px;
-  margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:10px;
 }
 .sec-title{
-  font-family:var(--font-b);
-  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-  color:#ffffff;font-weight:700;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sub);
   white-space:nowrap;
-  text-shadow:0 0 20px rgba(255,255,255,0.15);
 }
-.sec-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.12),transparent)}
-.sec{margin-bottom:24px}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.sec{margin-bottom:20px}
 
 /* ── Setup panel ──────────────────────────────── */
 #setupPanel{display:block}
@@ -193,14 +185,14 @@ html,body{
   border-radius:var(--r);padding:16px;margin-bottom:14px;
 }
 .setup-card-title{
-  font-family:var(--font-d);font-size:22px;letter-spacing:.08em;
+  font-family:var(--font-d);font-size:16px;letter-spacing:.08em;
   color:var(--text);margin-bottom:5px;
 }
-.setup-card-sub{font-size:13px;color:var(--sub);line-height:1.7}
+.setup-card-sub{font-size:12px;color:var(--sub);line-height:1.7}
 .file-row{margin-bottom:10px}
 .file-row-lbl{
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(255,255,255,0.5);margin-bottom:5px;display:block;font-weight:600;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px;display:block;
 }
 .file-btn{
   display:flex;align-items:center;gap:10px;
@@ -240,25 +232,24 @@ html,body{
   align-items:center;text-align:center;margin-bottom:14px;
 }
 .sc-name{
-  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
-  margin-bottom:2px;font-weight:800;font-family:var(--font-b);
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:2px;
 }
 .sc-name.a{color:var(--pa)} .sc-name.b{color:var(--pb)}
 .sc-sets{
-  font-family:var(--font-d);font-size:68px;letter-spacing:-.01em;line-height:1;
+  font-family:var(--font-d);font-size:64px;letter-spacing:-.01em;line-height:1;
   transition:all .3s;
 }
 .sc-sets.a{color:var(--pa)} .sc-sets.b{color:var(--pb)}
-.sc-colon{font-family:var(--font-d);font-size:24px;color:var(--muted)}
+.sc-colon{font-family:var(--font-d);font-size:22px;color:var(--muted)}
 .sc-sub{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center;
   padding-top:12px;border-top:1px solid var(--border);
 }
-.sc-sub-lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(255,255,255,0.55);margin-bottom:2px;font-weight:700;}
+.sc-sub-lbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .sc-sub-val{
-  font-family:var(--font-d);font-size:24px;letter-spacing:.04em;
-  color:#ffffff;
+  font-family:var(--font-d);font-size:22px;letter-spacing:.04em;
+  color:var(--text);
 }
 .sc-lead{
   text-align:center;margin-top:10px;
@@ -313,87 +304,81 @@ html,body{
 /* Rally log table */
 .rally-table{width:100%;border-collapse:collapse}
 .rally-table th{
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(255,255,255,0.7);padding:6px 8px;text-align:left;
-  border-bottom:1px solid var(--border2);font-weight:700;
-  font-family:var(--font-b);
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);padding:4px 8px;text-align:left;
+  border-bottom:1px solid var(--border);
 }
-.rally-table td{padding:7px 8px;font-size:13px;border-bottom:1px solid var(--border);color:var(--text);}
+.rally-table td{padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border)}
 .rally-table tr:last-child td{border-bottom:none}
-.correct{color:var(--pa);font-weight:700} .wrong{color:var(--danger);font-weight:700}
+.correct{color:var(--pa)} .wrong{color:var(--danger)}
 .rally-acc{
   display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 .acc-val{
-  font-family:var(--font-d);font-size:28px;color:#ffffff;letter-spacing:.04em;
+  font-family:var(--font-d);font-size:26px;color:var(--text);letter-spacing:.04em;
 }
-.acc-sub{font-size:12px;color:var(--sub);margin-left:5px;font-weight:500}
+.acc-sub{font-size:11px;color:var(--muted);margin-left:4px}
 
 /* Shot count cards */
 .shot-counts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .count-card{
   background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);padding:16px 18px;
+  border-radius:var(--r);padding:14px 16px;
   position:relative;overflow:hidden;
 }
 .count-card::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
 }
-.count-card.a::after{background:var(--pa);opacity:.6}
-.count-card.b::after{background:var(--pb);opacity:.6}
-.cc-name{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  margin-bottom:2px;font-weight:800;font-family:var(--font-b);}
+.count-card.a::after{background:var(--pa);opacity:.4}
+.count-card.b::after{background:var(--pb);opacity:.4}
+.cc-name{font-size:9px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
 .cc-name.a{color:var(--pa)} .cc-name.b{color:var(--pb)}
 .cc-num{
-  font-family:var(--font-d);font-size:56px;line-height:1;letter-spacing:-.01em;
+  font-family:var(--font-d);font-size:54px;line-height:1;letter-spacing:-.01em;
 }
 .cc-num.a{color:var(--pa)} .cc-num.b{color:var(--pb)}
-.cc-sub{font-size:12px;color:var(--sub);margin-top:3px;font-weight:500}
+.cc-sub{font-size:9px;color:var(--muted);margin-top:2px}
 
 /* Shot breakdown */
-.bd-tabs{display:flex;gap:6px;margin-bottom:12px}
+.bd-tabs{display:flex;gap:6px;margin-bottom:10px}
 .bd-tab{
-  padding:5px 16px;border-radius:20px;font-size:12px;font-weight:600;
-  border:1px solid var(--border);background:var(--s3);color:rgba(255,255,255,0.45);
-  transition:all .15s;font-family:var(--font-b);letter-spacing:.03em;
+  padding:4px 14px;border-radius:20px;font-size:11px;font-weight:500;
+  border:1px solid var(--border);background:var(--s3);color:var(--muted);
+  transition:all .15s;
 }
-.bd-tab.on-a{background:rgba(0,212,160,.1);border-color:var(--pa);color:var(--pa)}
-.bd-tab.on-b{background:rgba(91,158,245,.1);border-color:var(--pb);color:var(--pb)}
+.bd-tab.on-a{background:rgba(0,200,150,.08);border-color:var(--pa);color:var(--pa)}
+.bd-tab.on-b{background:rgba(74,144,226,.08);border-color:var(--pb);color:var(--pb)}
 .bd-panel{display:none}
 .bd-panel.show{display:block}
-.bd-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-.bd-leg-item{display:flex;align-items:center;gap:5px;font-size:12px;
-  color:rgba(255,255,255,0.65);font-weight:600;}
-.bd-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.shot-row{display:grid;grid-template-columns:84px 1fr 40px;align-items:center;gap:10px;margin-bottom:8px}
-.shot-row-lbl{font-size:12px;color:rgba(255,255,255,0.7);text-align:right;font-weight:600;}
-.bar-track{height:5px;background:var(--s3);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.bd-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.bd-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.bd-leg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.shot-row{display:grid;grid-template-columns:72px 1fr 32px;align-items:center;gap:8px;margin-bottom:6px}
+.shot-row-lbl{font-size:11px;color:var(--sub);text-align:right}
+.bar-track{height:4px;background:var(--s3);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
 .shot-n{
-  font-family:var(--font-d);font-size:16px;letter-spacing:.04em;color:#ffffff;
+  font-family:var(--font-d);font-size:15px;letter-spacing:.04em;color:var(--text);
 }
 
 /* Heatmap */
 .hm-wrap{
   background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);overflow:hidden;padding:14px;
+  border-radius:var(--r);overflow:hidden;padding:12px;
 }
-.hm-tabs{display:flex;gap:6px;margin-bottom:12px}
+.hm-tabs{display:flex;gap:6px;margin-bottom:10px}
 .hm-tab{
-  padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;
-  border:1px solid var(--border);background:var(--s3);
-  color:rgba(255,255,255,0.45);transition:all .15s;font-family:var(--font-b);
+  padding:3px 12px;border-radius:20px;font-size:10px;font-weight:500;letter-spacing:.04em;
+  border:1px solid var(--border);background:var(--s3);color:var(--muted);transition:all .15s;
 }
-.hm-tab.on-a{background:rgba(0,212,160,.1);border-color:var(--pa);color:var(--pa)}
-.hm-tab.on-b{background:rgba(91,158,245,.1);border-color:var(--pb);color:var(--pb)}
-.hm-tab.on-both{background:rgba(240,192,80,.07);border-color:var(--gold);color:var(--gold)}
+.hm-tab.on-a{background:rgba(0,200,150,.08);border-color:var(--pa);color:var(--pa)}
+.hm-tab.on-b{background:rgba(74,144,226,.08);border-color:var(--pb);color:var(--pb)}
+.hm-tab.on-both{background:rgba(232,184,75,.06);border-color:var(--gold);color:var(--gold)}
 #hmCanvas{width:100%;border-radius:7px;display:block}
 .hm-foot{
-  display:flex;justify-content:space-between;padding:8px 2px 0;
-  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(255,255,255,0.45);font-weight:600;
+  display:flex;justify-content:space-between;padding:6px 2px 0;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
 }
 </style>
 </head>
@@ -489,29 +474,6 @@ html,body{
             python prepare_data.py --video V008.mp4 --shots final_dataset_v008.csv --traj trajectories.csv --detections detections.csv
           </div>
         </div>
-
-        <div class="sec">
-          <div class="sec-hdr"><span class="sec-title">Player names</span><div class="sec-line"></div></div>
-          <div style="background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;font-size:12px;color:var(--sub);line-height:1.7;margin-bottom:10px">
-            <b style="color:var(--text)">Player A</b> = TV scoreboard <b>top row</b> (Anirudh's P1). 
-            <b style="color:var(--text)">Player B</b> = TV scoreboard <b>bottom row</b> (Anirudh's P2).<br>
-            Pause the video and check the broadcast scoreboard to identify them.
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div>
-              <label class="file-row-lbl" style="color:var(--pa)">Player A name</label>
-              <input id="nameA" type="text" placeholder="e.g. Federer" value="Player A"
-                style="width:100%;background:var(--s2);border:1px solid var(--pa);border-radius:9px;padding:9px 13px;color:var(--pa);font-size:12px;font-family:var(--font-b)"
-                oninput="setPlayerNames()">
-            </div>
-            <div>
-              <label class="file-row-lbl" style="color:var(--pb)">Player B name</label>
-              <input id="nameB" type="text" placeholder="e.g. Djokovic" value="Player B"
-                style="width:100%;background:var(--s2);border:1px solid var(--pb);border-radius:9px;padding:9px 13px;color:var(--pb);font-size:12px;font-family:var(--font-b)"
-                oninput="setPlayerNames()">
-            </div>
-          </div>
-        </div>
       </div><!-- /setupPanel -->
 
       <!-- ── STATS ──────────────────────────────── -->
@@ -564,12 +526,12 @@ html,body{
           <div class="sec-hdr"><span class="sec-title">Shot count</span><div class="sec-line"></div></div>
           <div class="shot-counts">
             <div class="count-card a">
-              <div class="cc-name a" id="cntLabelA">Player A</div>
+              <div class="cc-name a">Player A</div>
               <div class="cc-num a" id="cntA">0</div>
               <div class="cc-sub">shots so far</div>
             </div>
             <div class="count-card b">
-              <div class="cc-name b" id="cntLabelB">Player B</div>
+              <div class="cc-name b">Player B</div>
               <div class="cc-num b" id="cntB">0</div>
               <div class="cc-sub">shots so far</div>
             </div>
@@ -587,8 +549,8 @@ html,body{
             <div class="bd-leg-item"><div class="bd-leg-dot" style="background:#a060f0"></div>Volley</div>
           </div>
           <div class="bd-tabs">
-            <button class="bd-tab on-a" id="bdTabA" onclick="setBdTab('A')" id="bdTabLabelA">Player A</button>
-            <button class="bd-tab" id="bdTabB" onclick="setBdTab('B')" id="bdTabLabelB">Player B</button>
+            <button class="bd-tab on-a" id="bdTabA" onclick="setBdTab('A')">Player A</button>
+            <button class="bd-tab" id="bdTabB" onclick="setBdTab('B')">Player B</button>
           </div>
           <div class="bd-panel show" id="bdA"></div>
           <div class="bd-panel" id="bdB"></div>
@@ -631,12 +593,6 @@ const SHOT_CLR = {
 };
 const C_A = "#00c896", C_B = "#4a90e2";
 const HM_W = 440, HM_H = 250;
-
-// ── Player names (user-configurable) ──────────────────────────
-// PlayerA = Anirudh's fixed P1 (top row of TV scoreboard)
-// PlayerB = Anirudh's fixed P2 (bottom row of TV scoreboard)
-let playerAName = 'Player A';
-let playerBName = 'Player B';
 
 // ── State ──────────────────────────────────────────────────────
 let D = null;           // loaded JSON
@@ -910,7 +866,7 @@ function drawCourtLines(ctx) {
   ctx.moveTo(mx,sBot);ctx.lineTo(W-mx,sBot);
   ctx.stroke();
   ctx.fillStyle='rgba(160,200,255,0.25)';
-  ctx.font='bold 9px Space Grotesk,sans-serif';ctx.textAlign='center';
+  ctx.font='9px Outfit,sans-serif';ctx.textAlign='center';
   ctx.fillText('NET',W/2,H/2-4);
 }
 
@@ -931,26 +887,8 @@ function drawCurrentPlayers(ctx) {
     ctx.beginPath();ctx.arc(gx,gy,7,0,Math.PI*2);
     ctx.fillStyle=c;ctx.fill();
     ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='white';ctx.font='bold 10px Space Grotesk,sans-serif';
+    ctx.fillStyle='white';ctx.font='bold 9px Outfit,sans-serif';
     ctx.textAlign='center';ctx.fillText(pl,gx,gy+3);
-  }
-}
-
-// ── Player name configuration ──────────────────────────────────
-function setPlayerNames() {
-  playerAName = document.getElementById('nameA').value.trim() || 'Player A';
-  playerBName = document.getElementById('nameB').value.trim() || 'Player B';
-  // Update all static labels
-  document.getElementById('cntLabelA').textContent = playerAName;
-  document.getElementById('cntLabelB').textContent = playerBName;
-  document.getElementById('bdTabA').textContent = playerAName;
-  document.getElementById('bdTabB').textContent = playerBName;
-  document.getElementById('vidPillLabelA') && (document.getElementById('vidPillLabelA').textContent = playerAName);
-  // Re-render score and rally log if data is loaded
-  if (D && (hasProbs||hasRallies)) {
-    const rallyIdx = getCurrentRallyIdx(lastF);
-    if (hasProbs && hasRallies) renderScore(rallyIdx);
-    if (hasRallies)             renderRallyLog(rallyIdx);
   }
 }
 
@@ -1060,7 +998,7 @@ function updateShotNow(frame) {
   if (pid && shot!=='none') {
     const rid = frameToRallyId(frame);
     const pl  = resolvePlayer(pid, rid);
-    pe.textContent = pl==='A' ? playerAName : playerBName;
+    pe.textContent = 'Player '+pl;
     pe.style.color = pl==='A'?C_A:C_B;
   } else {
     pe.textContent = '';
@@ -1104,38 +1042,38 @@ function getCurrentRallyIdx(frame) {
 }
 
 // ── Score card ─────────────────────────────────────────────────
-// NOTE: Anirudh's P1/P2 are FIXED identities (read from TV scoreboard rows,
-// consistent across both sets). PlayerA = Anirudh P1, PlayerB = Anirudh P2.
-// DO NOT apply identity_table here — that table is only for pipeline positional data.
 function renderScore(rallyIdx) {
   if (!hasProbs||!hasRallies) return;
   const row  = D.probabilities[Math.min(rallyIdx, D.probabilities.length-1)];
+  const rid  = parseInt(row.Rally_ID);
+  const aIsP1 = identityTable[rid]!==undefined ? identityTable[rid] : true;
   const sc   = parseScore(row.Score||'');
-  // P1 = PlayerA, P2 = PlayerB — fixed throughout match, no set-boundary flip needed
-  const pASets  = sc.p1s;
-  const pBSets  = sc.p2s;
-  const pAGames = sc.p1g;
-  const pBGames = sc.p2g;
-  const pAPts   = sc.p1p;
-  const pBPts   = sc.p2p;
-  const pAWin   = parseFloat(row.P1_Win_Probability||.5)*100;
-  const pBWin   = 100 - pAWin;
+  // Swap sets/games/points if identity is flipped
+  const pASets = aIsP1 ? sc.p1s : sc.p2s;
+  const pBSets = aIsP1 ? sc.p2s : sc.p1s;
+  const pAGames= aIsP1 ? sc.p1g : sc.p2g;
+  const pBGames= aIsP1 ? sc.p2g : sc.p1g;
+  const pAPts  = aIsP1 ? sc.p1p : sc.p2p;
+  const pBPts  = aIsP1 ? sc.p2p : sc.p1p;
+  const pAWin  = aIsP1 ? parseFloat(row.P1_Win_Probability||.5)*100
+                        : (1-parseFloat(row.P1_Win_Probability||.5))*100;
+  const pBWin  = 100-pAWin;
 
   let leadTxt='';
-  if (pAWin>pBWin+3)      leadTxt=`<span style="color:${C_A}">▲ ${playerAName} leading</span>`;
-  else if (pBWin>pAWin+3) leadTxt=`<span style="color:${C_B}">▲ ${playerBName} leading</span>`;
+  if (pAWin>pBWin+3)      leadTxt=`<span style="color:${C_A}">▲ Player A leading</span>`;
+  else if (pBWin>pAWin+3) leadTxt=`<span style="color:${C_B}">▲ Player B leading</span>`;
   else                     leadTxt=`<span style="color:var(--muted)">Even match</span>`;
 
   document.getElementById('scoreContent').innerHTML = `
     <div class="score-card">
       <div class="score-grid">
         <div>
-          <div class="sc-name a">${playerAName}</div>
+          <div class="sc-name a">Player A</div>
           <div class="sc-sets a">${pASets}</div>
         </div>
         <div class="sc-colon">:</div>
         <div>
-          <div class="sc-name b">${playerBName}</div>
+          <div class="sc-name b">Player B</div>
           <div class="sc-sets b">${pBSets}</div>
         </div>
       </div>
@@ -1152,8 +1090,8 @@ function renderScore(rallyIdx) {
       <div class="sc-lead">${leadTxt}</div>
       <div class="prob-wrap">
         <div class="prob-labels">
-          <span style="color:${C_A}">${playerAName} &nbsp; ${pAWin.toFixed(1)}%</span>
-          <span style="color:${C_B}">${pBWin.toFixed(1)}% &nbsp; ${playerBName}</span>
+          <span style="color:${C_A}">A &nbsp; ${pAWin.toFixed(1)}%</span>
+          <span style="color:${C_B}">${pBWin.toFixed(1)}% &nbsp; B</span>
         </div>
         <div class="prob-track"><div class="prob-fill" style="width:${pAWin.toFixed(1)}%"></div></div>
       </div>
@@ -1184,11 +1122,13 @@ function buildMomentum() {
   momentumCanvas = document.getElementById('momentumCanvas');
   momentumCanvas.width  = momentumCanvas.parentElement.clientWidth||300;
   momentumCanvas.height = 110;
-  // P1_Win_Probability is always PlayerA's probability — Anirudh's P1/P2 are fixed
-  // identities, not positional. No set-boundary flip needed here.
-  momentumData = D.probabilities.map(row =>
-    parseFloat(row.P1_Win_Probability||0.5)*100
-  );
+  // Build Player A win probability array (identity-adjusted)
+  momentumData = D.probabilities.map((row,i) => {
+    const rid   = parseInt(row.Rally_ID);
+    const aIsP1 = identityTable[rid]!==undefined ? identityTable[rid] : true;
+    const p1Win = parseFloat(row.P1_Win_Probability||0.5)*100;
+    return aIsP1 ? p1Win : 100-p1Win;
+  });
   updateMomentum(momentumData.length-1);
 }
 
@@ -1232,9 +1172,9 @@ function updateMomentum(curIdx) {
   }
 
   // Labels
-  ctx.fillStyle='rgba(160,190,230,0.6)';
-  ctx.font='bold 10px Space Grotesk,sans-serif';ctx.textAlign='left';
-  ctx.fillText(`${playerAName} 100%`,3,10);ctx.fillText('50%',3,H/2-2);ctx.fillText('0%',3,H-2);
+  ctx.fillStyle='rgba(100,130,180,0.5)';
+  ctx.font='9px Outfit,sans-serif';ctx.textAlign='left';
+  ctx.fillText('A 100%',3,10);ctx.fillText('50%',3,H/2-2);ctx.fillText('0%',3,H-2);
 }
 
 // ── Rally log ──────────────────────────────────────────────────
@@ -1246,12 +1186,10 @@ function renderRallyLog(upToIdx) {
   const acc  = n ? (ok/n*100).toFixed(1) : '—';
   const last = rows.slice(-6).reverse();
 
-  // Anirudh's P1/P2 are fixed scoreboard identities — P1 = PlayerA, P2 = PlayerB
-  // No identity_table flip needed here. Server field is positional (Jayanthi's
-  // shot detection) so it also uses direct mapping as best approximation.
-  function resolveName(raw) {
-    const isP1 = String(raw).trim().toUpperCase()==='P1' || raw===1 || raw==='1';
-    return isP1 ? playerAName : playerBName;
+  // Identity-resolve winner labels
+  function resolveName(raw, rallyId) {
+    const pid = (String(raw).trim().toUpperCase()==='P1'||raw===1||raw==='1') ? 1 : 2;
+    return 'Player ' + resolvePlayer(pid, parseInt(rallyId||1));
   }
 
   const trs = last.map(r => {
@@ -1259,9 +1197,9 @@ function renderRallyLog(upToIdx) {
     const rid = r.Rally_ID||'';
     return `<tr>
       <td>${rid}</td>
-      <td>${resolveName(r.Server||'P1')}</td>
-      <td>${resolveName(r.Actual_Winner||'P1')}</td>
-      <td>${resolveName(r.Predicted_Winner||'P1')}</td>
+      <td>${resolveName(r.Server||'P1',rid)}</td>
+      <td>${resolveName(r.Actual_Winner||'P1',rid)}</td>
+      <td>${resolveName(r.Predicted_Winner||'P1',rid)}</td>
       <td class="${correct?'correct':'wrong'}">${correct?'✓':'✗'}</td>
     </tr>`;
   }).join('');
