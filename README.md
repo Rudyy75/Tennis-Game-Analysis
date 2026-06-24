@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <video src="assets/tennis_demo.mp4" width="700" autoplay loop muted playsinline></video>
+  <img src="assets/tennis_demo.gif" width="700" alt="Pipeline Demo"/>
 </p>
 
 ---
